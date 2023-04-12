@@ -425,14 +425,14 @@
           // validator files are included in the download package
           // otherwise download from http://1000hz.github.io/bootstrap-validator
 
-        if($("#contact-form").length && false) {
-            $('#contact-form').validator();
+        if($("#contact-form").length) {
+            // $('#contact-form').validator();
             // when the form is submitted
             $('#contact-form').on('submit', function (e) {
 
                 // if the validator does not prevent form submit
                 if (!e.isDefaultPrevented()) {
-                    var url = "inc/contact.php";
+                    var url = "https://formspree.io/f/mzbqvlkl";
 
                     // POST values in the background the the script URL
                     $.ajax({
@@ -457,6 +457,39 @@
                                 // empty the form
                                 $('#contact-form')[0].reset();
                             }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                          console.log('error found');
+                          if (jqXHR.status==0) {
+                            var messageAlert = 'alert-' + 'Success';
+                            var messageText = 'You Query has been successfully send to C2C Technology';
+
+                            // let's compose Bootstrap alert box HTML
+                            var alertBox = '<div class="alert ' + messageAlert + ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + messageText + '</div>';
+
+                            // If we have messageAlert and messageText
+                            if (messageAlert && messageText) {
+                                // inject the alert to .messages div in our form
+                                $('#contact-form').find('.messages').html(alertBox);
+                                // empty the form
+                                $('#contact-form')[0].reset();
+                            }
+                          } else {
+                              // Fail message
+                              var messageAlert = 'alert-' + 'Failure';
+                              var messageText = 'Could not save record please try later';
+
+                              // let's compose Bootstrap alert box HTML
+                              var alertBox = '<div class="alert ' + messageAlert + ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + messageText + '</div>';
+
+                              // If we have messageAlert and messageText
+                              if (messageAlert && messageText) {
+                                  // inject the alert to .messages div in our form
+                                  $('#contact-form').find('.messages').html(alertBox);
+                                  // empty the form
+                                  $('#contact-form')[0].reset();
+                              }
+                          } 
                         }
                     });
                     return false;
